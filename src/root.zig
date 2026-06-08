@@ -1,18 +1,29 @@
-//! By convention, root.zig is the root source file when making a package.
+//! Shared game state and rules live here so the terminal client is just one frontend.
 const std = @import("std");
-const Io = std.Io;
 
-/// This is a documentation comment to explain the `printAnotherMessage` function below.
-///
-/// Accepting an `Io.Writer` instance is a handy way to write reusable code.
-pub fn printAnotherMessage(writer: *Io.Writer) Io.Writer.Error!void {
-    try writer.print("Run `zig build test` to run the tests.\n", .{});
-}
+pub const core = @import("core.zig");
 
-pub fn add(a: i32, b: i32) i32 {
-    return a + b;
-}
+pub const kitchen_rows = core.kitchen_rows;
+pub const Game = core.Game;
+pub const GamePhase = core.GamePhase;
+pub const Tile = core.Tile;
+pub const StationKind = core.StationKind;
+pub const IngredientKind = core.IngredientKind;
+pub const PrepState = core.PrepState;
+pub const Item = core.Item;
+pub const Position = core.Position;
+pub const PlayerAction = core.PlayerAction;
+pub const Player = core.Player;
+pub const Order = core.Order;
+pub const initGame = core.initGame;
+pub const tileAt = core.tileAt;
+pub const stationKind = core.stationKind;
+pub const isWalkable = core.isWalkable;
+pub const applyAction = core.applyAction;
+pub const tick = core.tick;
 
-test "basic add functionality" {
-    try std.testing.expect(add(3, 7) == 10);
+test "package exports reach the shared core" {
+    const game = initGame();
+    try std.testing.expectEqual(GamePhase.start, game.phase);
+    try std.testing.expectEqual(Tile.prep_station, tileAt(.{ .row = 1, .col = 4 }));
 }
