@@ -170,6 +170,7 @@ pub fn applyAction(game: *Game, action: PlayerAction) void {
                 .right => {
                     game.player.position.col += 1;
                 },
+                else => {},
             }
         },
     }

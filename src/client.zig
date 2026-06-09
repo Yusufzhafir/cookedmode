@@ -1,13 +1,14 @@
 const cookedmode = @import("cookedmode");
 const std = @import("std");
 
-pub fn run(writer: std.Io.Writer) !void {
+pub fn run(writer: *const std.Io.Writer) !void {
     var game = cookedmode.initGame();
     cookedmode.applyAction(&game, .start);
     try render(writer, &game);
 }
 
-pub fn render(writer: std.Io.Writer, game: *const cookedmode.Game) !void {
+pub fn render(writer: *const std.Io.Writer, game: *const cookedmode.Game) !void {
+    // const writer = writerObj;
     try writer.writeAll("\x1b[2J\x1b[H");
     try writer.print("Cooked Mode\n", .{});
     try writer.print("phase: {s}\n", .{@tagName(game.phase)});
