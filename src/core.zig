@@ -159,16 +159,32 @@ pub fn applyAction(game: *Game, action: PlayerAction) void {
             game.last_message = "TODO: implement movement and wall checks in core.applyAction.";
             switch (action) {
                 .up => {
-                    game.player.position.row -= 1;
+                    var new_position = game.player.position;
+                    new_position.row -= 1;
+                    if (isWalkable(tileAt(new_position))) {
+                        game.player.position.row -= 1;
+                    }
                 },
                 .down => {
-                    game.player.position.row += 1;
+                    var new_position = game.player.position;
+                    new_position.row += 1;
+                    if (isWalkable(tileAt(new_position))) {
+                        game.player.position.row += 1;
+                    }
                 },
                 .left => {
-                    game.player.position.col -= 1;
+                    var new_position = game.player.position;
+                    new_position.col -= 1;
+                    if (isWalkable(tileAt(new_position))) {
+                        game.player.position.col -= 1;
+                    }
                 },
                 .right => {
-                    game.player.position.col += 1;
+                    var new_position = game.player.position;
+                    new_position.col += 1;
+                    if (isWalkable(tileAt(new_position))) {
+                        game.player.position.col += 1;
+                    }
                 },
                 else => {},
             }
