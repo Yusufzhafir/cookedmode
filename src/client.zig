@@ -5,6 +5,7 @@ const up = [_]u8{ 0x1B, 0x5B, 0x41 };
 const down = [_]u8{ 0x1B, 0x5B, 0x42 };
 const right = [_]u8{ 0x1B, 0x5B, 0x43 };
 const left = [_]u8{ 0x1B, 0x5B, 0x44 };
+const interact = [_]u8{ 0x7a, 0x00, 0x00 };
 
 const eql = std.mem.eql;
 
@@ -39,6 +40,8 @@ pub fn run(writer: *std.Io.Writer, stdin: *std.Io.Reader) !void {
             gameAction = .left;
         } else if (eql(u8, input, &right)) {
             gameAction = .right;
+        } else if (eql(u8, input, &interact)) {
+            gameAction = .interact;
         } else {
             gameAction = .none;
         }

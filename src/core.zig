@@ -153,10 +153,35 @@ pub fn applyAction(game: *Game, action: PlayerAction) void {
             game.last_message = "TODO: decide what quitting means for score and cleanup.";
         },
         .interact => {
-            game.last_message = "TODO: look at the player's neighboring tile and apply station rules.";
+            const tile = tileAt(game.player.position);
+            switch (tile) {
+                .delivery_counter => {
+                    if (game.player.carrying) |carrying_item| {
+                        if (carrying_item.kind == .bun and carrying_item.prep == .steamed) {
+                            game.last_message = "you delivered a bun!";
+                            game.coins += 1;
+
+                            game.player.carrying = null;
+                        }
+                    }
+                },
+                .ingredient_station => {
+                    game.last_message = "Holding a bun";
+                    game.player.carrying = Item{ .kind = .bun, .prep = .raw };
+                },
+                .prep_station => {
+                    game.last_message = "Cooked a bun!";
+                    if (game.player.carrying) |_| {
+                        game.player.carrying.?.prep = .steamed;
+                    }
+                },
+                .floor, .wall => {
+                    game.last_message = "not interacting";
+                },
+            }
         },
         .up, .down, .left, .right => {
-            game.last_message = "TODO: implement movement and wall checks in core.applyAction.";
+            game.last_message = "moving";
             switch (action) {
                 .up => {
                     var new_position = game.player.position;
